@@ -1,20 +1,23 @@
 import Header from '@/components/Header';
 export const dynamic = 'force-dynamic';
 import { prisma } from '@/lib/prisma';
-import { IndianRupee, Package, AlertCircle, ShoppingCart, Sparkles, ArrowRight } from 'lucide-react';
+import { AlertCircle, ShoppingCart, Sparkles, ArrowRight, Package } from 'lucide-react';
 import Link from 'next/link';
 
 import DashboardCharts from '@/components/DashboardCharts';
+import DashboardStatsClient from '@/components/DashboardStatsClient';
 
 export default async function Dashboard() {
-  // Fetch summary data
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+  const startOfYear = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
 
   const [
     totalProductsCount,
     products,
-    todaySales,
     allSales
   ] = await Promise.all([
     prisma.product.count(),
@@ -22,26 +25,21 @@ export default async function Dashboard() {
       include: { variants: true }
     }),
     prisma.sale.findMany({
-      where: {
-        saleDate: {
-          gte: today,
-        },
-      },
-    }),
-    prisma.sale.findMany({
-      include: { items: true }
+      include: { items: true },
+      orderBy: { saleDate: 'desc' }
     })
   ]);
 
+  // Inventory stats
   let lowStockCount = 0;
   let outOfStockCount = 0;
   let totalInventoryValue = 0;
-  let totalInventoryItemCount = 0;
+  let totalInventoryUnits = 0;
 
   products.forEach(p => {
     if (p.variants && p.variants.length > 0) {
       p.variants.forEach(v => {
-        totalInventoryItemCount++;
+        totalInventoryUnits += v.stockQuantity;
         if (v.stockQuantity === 0) {
           outOfStockCount++;
         } else if (v.stockQuantity <= v.minStock) {
@@ -50,7 +48,7 @@ export default async function Dashboard() {
         totalInventoryValue += v.purchasePrice * v.stockQuantity;
       });
     } else {
-      totalInventoryItemCount++;
+      totalInventoryUnits += p.stockQuantity;
       if (p.stockQuantity === 0) {
         outOfStockCount++;
       } else if (p.stockQuantity <= p.minStock) {
@@ -60,48 +58,43 @@ export default async function Dashboard() {
     }
   });
 
-  const todayRevenue = todaySales.reduce((acc, s) => acc + s.totalAmount, 0);
-  const todayProfit = todaySales.reduce((acc, s) => acc + s.profit, 0);
+  // Calculate stats for daily, weekly, monthly, annual, allTime
+  const computePeriod = (filterFn: (date: Date) => boolean) => {
+    const subset = allSales.filter(s => filterFn(new Date(s.saleDate)));
+    const revenue = subset.reduce((acc, s) => acc + s.totalAmount, 0);
+    const profit = subset.reduce((acc, s) => acc + s.profit, 0);
+    return {
+      revenue,
+      profit,
+      billsCount: subset.length
+    };
+  };
+
+  const daily = computePeriod(d => d >= startOfToday);
+  const weekly = computePeriod(d => d >= sevenDaysAgo);
+  const monthly = computePeriod(d => d >= startOfMonth);
+  const annual = computePeriod(d => d >= startOfYear);
+  const allTime = {
+    revenue: allSales.reduce((acc, s) => acc + s.totalAmount, 0),
+    profit: allSales.reduce((acc, s) => acc + s.profit, 0),
+    billsCount: allSales.length
+  };
 
   return (
     <div>
       <Header title="Dashboard" />
       
-      <div className="grid grid-cols-4" style={{ marginBottom: '2rem', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))' }}>
-        <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Today's Sales</h3>
-            <div style={{ color: 'var(--primary-color)' }}><ShoppingCart size={20} /></div>
-          </div>
-          <p style={{ fontSize: '1.875rem', fontWeight: 700 }}>₹{todayRevenue.toFixed(2)}</p>
-        </div>
-        
-        <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Today's Profit</h3>
-            <div style={{ color: 'var(--success-color)' }}><IndianRupee size={20} /></div>
-          </div>
-          <p style={{ fontSize: '1.875rem', fontWeight: 700, color: todayProfit >= 0 ? 'inherit' : 'var(--danger-color)' }}>
-            ₹{todayProfit.toFixed(2)}
-          </p>
-        </div>
-        
-        <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Total Products</h3>
-            <div style={{ color: 'var(--text-secondary)' }}><Package size={20} /></div>
-          </div>
-          <p style={{ fontSize: '1.875rem', fontWeight: 700 }}>{totalProductsCount}</p>
-        </div>
-        
-        <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Inventory Value</h3>
-            <div style={{ color: 'var(--warning-color)' }}><IndianRupee size={20} /></div>
-          </div>
-          <p style={{ fontSize: '1.875rem', fontWeight: 700 }}>₹{totalInventoryValue.toFixed(2)}</p>
-        </div>
-      </div>
+      {/* Interactive Multi-Period Metric Cards (Daily / Weekly / Monthly / Annual / All) */}
+      <DashboardStatsClient
+        daily={daily}
+        weekly={weekly}
+        monthly={monthly}
+        annual={annual}
+        allTime={allTime}
+        totalProductsCount={totalProductsCount}
+        totalInventoryValue={totalInventoryValue}
+        totalInventoryUnits={totalInventoryUnits}
+      />
 
       {/* AI Sales Predictor Banner */}
       <div style={{
@@ -179,6 +172,7 @@ export default async function Dashboard() {
         </div>
       </div>
       
+      {/* Charts (with Daily, Weekly, Monthly, Annual bar comparisons) */}
       <DashboardCharts sales={allSales} products={products} />
     </div>
   );

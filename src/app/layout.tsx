@@ -1,6 +1,7 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
+import SecretAdminShortcut from '@/components/SecretAdminShortcut';
 
 export const metadata: Metadata = {
   title: 'Retail Shop Management',
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
+        <SecretAdminShortcut />
         {children}
       </body>
     </html>

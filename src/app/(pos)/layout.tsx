@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
-import { ShoppingCart, LayoutDashboard, LogIn } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 
 export default function POSLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,28 +15,22 @@ export default function POSLayout({ children }: { children: ReactNode }) {
         justifyContent: 'space-between',
         flexShrink: 0,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        {/* Store Brand / Home link */}
+        <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ backgroundColor: '#4F46E5', borderRadius: '8px', padding: '0.4rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ShoppingCart size={20} color="white" />
           </div>
           <div>
-            <p style={{ color: 'white', fontWeight: 700, fontSize: '1.1rem', lineHeight: 1 }}>ShopManager POS</p>
-            <p style={{ color: '#94A3B8', fontSize: '0.7rem', lineHeight: 1.2 }}>Billing Terminal</p>
+            <p style={{ color: 'white', fontWeight: 700, fontSize: '1.1rem', lineHeight: 1, margin: 0 }}>Retail Store</p>
+            <p style={{ color: '#94A3B8', fontSize: '0.7rem', lineHeight: 1.2, margin: '0.15rem 0 0 0' }}>Store Catalog & Quick Billing</p>
           </div>
-        </div>
+        </Link>
 
+        {/* Date display — No Admin link or button visible to customers */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ color: '#94A3B8', fontSize: '0.875rem' }}>
-            {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+          <span style={{ color: '#94A3B8', fontSize: '0.85rem' }}>
+            {new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
           </span>
-          <Link href="/dashboard" style={{
-            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-            color: '#94A3B8', fontSize: '0.875rem', padding: '0.4rem 0.9rem',
-            border: '1px solid #334155', borderRadius: '6px',
-            transition: 'all 0.2s'
-          }}>
-            <LayoutDashboard size={15} /> Admin
-          </Link>
         </div>
       </header>
 

@@ -3,14 +3,23 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const authCookie = request.cookies.get('admin_auth');
+  const pathname = request.nextUrl.pathname;
   
   // Exclude login page, home page, api routes, and POS terminal
   if (
-    request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/pos') ||
-    request.nextUrl.pathname === '/'
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/pos') ||
+    pathname === '/'
   ) {
     return NextResponse.next();
+  }
+
+  // Handle /admin direct route
+  if (pathname === '/admin' || pathname === '/admin/') {
+    if (!authCookie || authCookie.value !== 'authenticated') {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   // Redirect to login if not authenticated
@@ -23,6 +32,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    '/admin',
+    '/admin/:path*',
     '/dashboard/:path*',
     '/billing/:path*',
     '/products/:path*',
@@ -31,5 +42,6 @@ export const config = {
     '/reports/:path*',
     '/history/:path*',
     '/settings/:path*',
+    '/predictor/:path*',
   ],
 };
