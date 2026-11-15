@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vakatipavankumar.vercel.app/sitemap.xml
