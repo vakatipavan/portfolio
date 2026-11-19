@@ -79,6 +79,26 @@ export function App() {
     };
   }, []);
 
+  // Secret admin shortcut listener: Ctrl+A or Shift+A opens Admin Portal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const activeTag = document.activeElement?.tagName?.toLowerCase();
+      const isInput = activeTag === 'input' || activeTag === 'textarea';
+
+      const isKeyA = e.key === 'a' || e.key === 'A';
+      const isShiftA = e.shiftKey && isKeyA && !e.ctrlKey && !e.altKey && !e.metaKey;
+      const isCtrlA = (e.ctrlKey || e.metaKey) && isKeyA;
+
+      if (!isInput && (isShiftA || isCtrlA)) {
+        e.preventDefault();
+        setLoginModalOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // Update and persist data
   const handleUpdateData = async (updater) => {
     const updated = typeof updater === 'function' ? updater(data) : updater;

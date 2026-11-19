@@ -69,9 +69,9 @@ export function AchievementsSection({
                       <h4 className="font-semibold text-sm text-zinc-900">
                         {item.name}
                       </h4>
-                      {(item.organizer || item.year) && (
+                      {item.organizer && (
                         <p className="text-xs text-zinc-500 mt-0.5">
-                          {item.organizer} {item.organizer && item.year ? '•' : ''} {item.year}
+                          {item.organizer}
                         </p>
                       )}
                     </div>
@@ -166,9 +166,9 @@ export function AchievementsSection({
                       <h4 className="font-semibold text-sm text-zinc-900">
                         {item.title}
                       </h4>
-                      {(item.issuer || item.year) && (
+                      {item.issuer && (
                         <p className="text-xs text-zinc-500 mt-0.5">
-                          {item.issuer} {item.issuer && item.year ? '•' : ''} {item.year}
+                          {item.issuer}
                         </p>
                       )}
                     </div>

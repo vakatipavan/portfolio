@@ -1,8 +1,9 @@
 import React from 'react';
-import { Pencil } from 'lucide-react';
+import { Pencil, Mail, Phone, Linkedin, Github } from 'lucide-react';
 
 export function PersonalSection({ data, isAdmin, onEdit }) {
   const { name, title, intro } = data.personal || {};
+  const contact = data.contact || {};
 
   return (
     <section id="personal" className="pt-12 pb-16 border-b border-zinc-200">
@@ -28,6 +29,57 @@ export function PersonalSection({ data, isAdmin, onEdit }) {
               No introduction provided yet.
             </p>
           )}
+
+          {/* Profile Quick Links (Phone, Email, LinkedIn, GitHub) */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-6 text-xs text-zinc-600 font-medium">
+            {contact.email && (
+              <a
+                href={`mailto:${contact.email}`}
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-50 border border-zinc-200 rounded hover:border-zinc-300 hover:text-black transition-colors"
+                title="Email"
+              >
+                <Mail className="w-3.5 h-3.5 text-zinc-500" />
+                <span>{contact.email}</span>
+              </a>
+            )}
+
+            {contact.phone && (
+              <a
+                href={`tel:${contact.phone}`}
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-50 border border-zinc-200 rounded hover:border-zinc-300 hover:text-black transition-colors"
+                title="Phone"
+              >
+                <Phone className="w-3.5 h-3.5 text-zinc-500" />
+                <span>{contact.phone}</span>
+              </a>
+            )}
+
+            {contact.linkedin && (
+              <a
+                href={contact.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-50 border border-zinc-200 rounded hover:border-zinc-300 hover:text-black transition-colors"
+                title="LinkedIn Profile"
+              >
+                <Linkedin className="w-3.5 h-3.5 text-zinc-500" />
+                <span>LinkedIn</span>
+              </a>
+            )}
+
+            {contact.github && (
+              <a
+                href={contact.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-50 border border-zinc-200 rounded hover:border-zinc-300 hover:text-black transition-colors"
+                title="GitHub Profile"
+              >
+                <Github className="w-3.5 h-3.5 text-zinc-500" />
+                <span>GitHub</span>
+              </a>
+            )}
+          </div>
         </div>
 
         {isAdmin && (

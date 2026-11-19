@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 
 const CONFIG_STORAGE_KEY = 'portfolio_firebase_config';
-const LOCAL_DATA_KEY = 'portfolio_saved_data_v1';
+const LOCAL_DATA_KEY = 'portfolio_saved_data_v5';
 const LOCAL_AUTH_KEY = 'portfolio_admin_session';
 
 // Get Firebase configuration either from Vite env or localStorage

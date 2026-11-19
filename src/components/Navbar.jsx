@@ -43,40 +43,30 @@ export function Navbar({ isAdmin, adminUser, onOpenLogin, onLogout, onOpenDbSett
           ))}
         </nav>
 
-        {/* Right side controls */}
-        <div className="hidden sm:flex items-center space-x-3 text-sm">
-          {isAdmin ? (
-            <div className="flex items-center space-x-2">
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-zinc-100 text-zinc-800 border border-zinc-300">
-                Admin
-              </span>
-              
-              <button
-                onClick={onOpenDbSettings}
-                title="Firebase Settings"
-                className="p-1.5 text-zinc-500 hover:text-zinc-900 border border-zinc-200 rounded hover:bg-zinc-50 transition-colors"
-              >
-                <Database className="w-4 h-4" />
-              </button>
-
-              <button
-                onClick={onLogout}
-                className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-medium text-zinc-700 bg-white border border-zinc-300 rounded hover:bg-zinc-50 transition-colors"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-                <span>Logout</span>
-              </button>
-            </div>
-          ) : (
+        {/* Right side controls (Only visible when logged in as admin) */}
+        {isAdmin && (
+          <div className="hidden sm:flex items-center space-x-2 text-sm">
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-zinc-100 text-zinc-800 border border-zinc-300">
+              Admin
+            </span>
+            
             <button
-              onClick={onOpenLogin}
-              className="inline-flex items-center space-x-1.5 text-xs text-zinc-500 hover:text-zinc-900 py-1 px-2.5 rounded border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
+              onClick={onOpenDbSettings}
+              title="Firebase Settings"
+              className="p-1.5 text-zinc-500 hover:text-zinc-900 border border-zinc-200 rounded hover:bg-zinc-50 transition-colors"
             >
-              <Lock className="w-3.5 h-3.5" />
-              <span>Admin Login</span>
+              <Database className="w-4 h-4" />
             </button>
-          )}
-        </div>
+
+            <button
+              onClick={onLogout}
+              className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-medium text-zinc-700 bg-white border border-zinc-300 rounded hover:bg-zinc-50 transition-colors"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Logout</span>
+            </button>
+          </div>
+        )}
 
         {/* Mobile menu hamburger */}
         <div className="flex items-center space-x-2 lg:hidden">
@@ -109,43 +99,30 @@ export function Navbar({ isAdmin, adminUser, onOpenLogin, onLogout, onOpenDbSett
             </a>
           ))}
 
-          <div className="pt-3 flex items-center justify-between">
-            {isAdmin ? (
-              <div className="flex items-center space-x-3 w-full justify-between">
-                <button
-                  onClick={() => {
-                    handleLinkClick();
-                    onOpenDbSettings();
-                  }}
-                  className="text-xs text-zinc-600 flex items-center space-x-1 border border-zinc-200 px-2.5 py-1.5 rounded"
-                >
-                  <Database className="w-3.5 h-3.5" />
-                  <span>Firebase Config</span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleLinkClick();
-                    onLogout();
-                  }}
-                  className="text-xs text-zinc-700 font-medium flex items-center space-x-1 border border-zinc-300 px-3 py-1.5 rounded bg-zinc-50"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Logout</span>
-                </button>
-              </div>
-            ) : (
+          {isAdmin && (
+            <div className="pt-3 border-t border-zinc-100 flex items-center space-x-3 w-full justify-between">
               <button
                 onClick={() => {
                   handleLinkClick();
-                  onOpenLogin();
+                  onOpenDbSettings();
                 }}
-                className="w-full text-center text-xs text-zinc-700 font-medium flex items-center justify-center space-x-1.5 border border-zinc-300 py-2 rounded bg-zinc-50 hover:bg-zinc-100"
+                className="text-xs text-zinc-600 flex items-center space-x-1 border border-zinc-200 px-2.5 py-1.5 rounded"
               >
-                <Lock className="w-3.5 h-3.5" />
-                <span>Admin Login</span>
+                <Database className="w-3.5 h-3.5" />
+                <span>Firebase Config</span>
               </button>
-            )}
-          </div>
+              <button
+                onClick={() => {
+                  handleLinkClick();
+                  onLogout();
+                }}
+                className="text-xs text-zinc-700 font-medium flex items-center space-x-1 border border-zinc-300 px-3 py-1.5 rounded bg-zinc-50"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
     </header>

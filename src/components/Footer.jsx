@@ -14,24 +14,17 @@ export function Footer({ isAdmin, onOpenLogin, onLogout }) {
         </div>
 
         <div className="flex items-center space-x-4">
-          {isAdmin ? (
-            <button
-              onClick={onLogout}
-              className="hover:text-zinc-900 transition-colors"
-            >
-              Admin Logout
-            </button>
-          ) : (
-            <button
-              onClick={onOpenLogin}
-              className="inline-flex items-center space-x-1 hover:text-zinc-900 transition-colors"
-            >
-              <Lock className="w-3 h-3" />
-              <span>Admin Access</span>
-            </button>
+          {isAdmin && (
+            <>
+              <button
+                onClick={onLogout}
+                className="hover:text-zinc-900 transition-colors"
+              >
+                Admin Logout
+              </button>
+              <span className="text-zinc-300">•</span>
+            </>
           )}
-
-          <span className="text-zinc-300">•</span>
 
           <button
             onClick={scrollToTop}
