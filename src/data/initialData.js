@@ -57,7 +57,9 @@ export const initialData = {
   projects: [],
   achievements: [],
   certifications: [],
+  competitions: [],
   positions: [],
+  interests: [],
   contact: {
     email: "vakatipavankumar.official@gmail.com",
     phone: "",

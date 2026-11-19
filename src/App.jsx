@@ -512,6 +512,61 @@ export function App() {
     }
   };
 
+  const handleAddCompetition = () => {
+    setEditModal({
+      isOpen: true,
+      title: 'Add Competition / Event Participated',
+      fields: [
+        { name: 'name', label: 'Event / Competition Name', required: true, placeholder: 'e.g. Smart India Hackathon / Inter-College TechFest' },
+        { name: 'organizer', label: 'Organizing Body / Institution', placeholder: 'e.g. AICTE / IIT Madras / College Dept' },
+        { name: 'year', label: 'Year / Date', placeholder: 'e.g. Oct 2024' },
+        { name: 'role', label: 'Role / Participation Status', placeholder: 'e.g. Participant / Finalist / Team Lead' },
+        { name: 'description', label: 'Description / Highlights', type: 'textarea', rows: 3, placeholder: 'Brief note about what was presented or built...' },
+        { name: 'link', label: 'Certificate / Project Link (Optional)', placeholder: 'https://...' }
+      ],
+      initialData: { name: '', organizer: '', year: '', role: '', description: '', link: '' },
+      onSave: (formData) => {
+        const newEvent = { id: 'evt-' + Date.now(), ...formData };
+        handleUpdateData((prev) => ({
+          ...prev,
+          competitions: [...(prev.competitions || []), newEvent]
+        }));
+      }
+    });
+  };
+
+  const handleEditCompetition = (item) => {
+    setEditModal({
+      isOpen: true,
+      title: 'Edit Competition / Event Participated',
+      fields: [
+        { name: 'name', label: 'Event / Competition Name', required: true },
+        { name: 'organizer', label: 'Organizing Body / Institution' },
+        { name: 'year', label: 'Year / Date' },
+        { name: 'role', label: 'Role / Participation Status' },
+        { name: 'description', label: 'Description / Highlights', type: 'textarea', rows: 3 },
+        { name: 'link', label: 'Certificate / Project Link (Optional)' }
+      ],
+      initialData: item,
+      onSave: (formData) => {
+        handleUpdateData((prev) => ({
+          ...prev,
+          competitions: (prev.competitions || []).map((c) => (c.id === item.id ? { ...c, ...formData } : c))
+        }));
+      }
+    });
+  };
+
+  const handleDeleteCompetition = (id) => {
+    if (window.confirm('Delete this event / competition?')) {
+      handleUpdateData((prev) => ({
+        ...prev,
+        competitions: (prev.competitions || []).filter((c) => c.id !== id)
+      }));
+      showToast('Event removed');
+    }
+  };
+
   // --------------------------------------------------------------------------
   // 6. POSITIONS & RESPONSIBILITIES HANDLERS
   // --------------------------------------------------------------------------
@@ -736,10 +791,11 @@ export function App() {
           onDelete={handleDeleteProject}
         />
 
-        {/* 5. Achievements and Certifications */}
+        {/* 5. Achievements, Certifications & Participations */}
         <AchievementsSection
           achievements={data.achievements || []}
           certifications={data.certifications || []}
+          competitions={data.competitions || []}
           isAdmin={isAdmin}
           onAddAchievement={handleAddAchievement}
           onEditAchievement={handleEditAchievement}
@@ -747,6 +803,9 @@ export function App() {
           onAddCertificate={handleAddCertificate}
           onEditCertificate={handleEditCertificate}
           onDeleteCertificate={handleDeleteCertificate}
+          onAddCompetition={handleAddCompetition}
+          onEditCompetition={handleEditCompetition}
+          onDeleteCompetition={handleDeleteCompetition}
         />
 
         {/* 6. Positions and Responsibilities */}
