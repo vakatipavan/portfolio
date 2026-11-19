@@ -14,6 +14,7 @@ import { SkillsSection } from './components/SkillsSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { AchievementsSection } from './components/AchievementsSection';
 import { PositionsSection } from './components/PositionsSection';
+import { InterestsSection } from './components/InterestsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 
@@ -566,7 +567,102 @@ export function App() {
   };
 
   // --------------------------------------------------------------------------
-  // 7. CONTACT DETAILS HANDLER
+  // 7. HOBBIES & INTERESTS HANDLERS
+  // --------------------------------------------------------------------------
+  const handleAddInterest = () => {
+    setEditModal({
+      isOpen: true,
+      title: 'Add Hobbies / Interests Category',
+      fields: [
+        {
+          name: 'category',
+          label: 'Category',
+          type: 'select',
+          required: true,
+          options: [
+            { value: 'Hobbies', label: '📚 Hobbies' },
+            { value: 'Sports', label: '⚽ Sports' },
+            { value: 'Games', label: '🎮 Games' },
+            { value: 'Creative', label: '🎨 Creative Interests' },
+            { value: 'Other', label: '✨ Other' },
+          ]
+        },
+        {
+          name: 'itemsStr',
+          label: 'Items (Comma-separated)',
+          required: true,
+          placeholder: 'e.g. Cricket, Chess, Reading, Gaming',
+          helper: 'Separate each item with a comma.'
+        }
+      ],
+      initialData: { category: 'Hobbies', itemsStr: '' },
+      onSave: (formData) => {
+        const items = (formData.itemsStr || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        const newGroup = { id: 'int-' + Date.now(), category: formData.category, items };
+        handleUpdateData((prev) => ({
+          ...prev,
+          interests: [...(prev.interests || []), newGroup]
+        }));
+      }
+    });
+  };
+
+  const handleEditInterest = (group) => {
+    setEditModal({
+      isOpen: true,
+      title: 'Edit Interests Category',
+      fields: [
+        {
+          name: 'category',
+          label: 'Category',
+          type: 'select',
+          required: true,
+          options: [
+            { value: 'Hobbies', label: '📚 Hobbies' },
+            { value: 'Sports', label: '⚽ Sports' },
+            { value: 'Games', label: '🎮 Games' },
+            { value: 'Creative', label: '🎨 Creative Interests' },
+            { value: 'Other', label: '✨ Other' },
+          ]
+        },
+        {
+          name: 'itemsStr',
+          label: 'Items (Comma-separated)',
+          required: true,
+          helper: 'Separate each item with a comma.'
+        }
+      ],
+      initialData: { category: group.category, itemsStr: (group.items || []).join(', ') },
+      onSave: (formData) => {
+        const items = (formData.itemsStr || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        handleUpdateData((prev) => ({
+          ...prev,
+          interests: prev.interests.map((g) =>
+            g.id === group.id ? { ...g, category: formData.category, items } : g
+          )
+        }));
+      }
+    });
+  };
+
+  const handleDeleteInterest = (id) => {
+    if (window.confirm('Delete this interest category?')) {
+      handleUpdateData((prev) => ({
+        ...prev,
+        interests: prev.interests.filter((g) => g.id !== id)
+      }));
+      showToast('Interest category removed');
+    }
+  };
+
+  // --------------------------------------------------------------------------
+  // 8. CONTACT DETAILS HANDLER
   // --------------------------------------------------------------------------
   const handleEditContact = () => {
     setEditModal({
@@ -662,7 +758,16 @@ export function App() {
           onDelete={handleDeletePosition}
         />
 
-        {/* 7. Contact Details */}
+        {/* 7. Hobbies & Interests */}
+        <InterestsSection
+          interests={data.interests || []}
+          isAdmin={isAdmin}
+          onAdd={handleAddInterest}
+          onEdit={handleEditInterest}
+          onDelete={handleDeleteInterest}
+        />
+
+        {/* 8. Contact Details */}
         <ContactSection
           contact={data.contact || {}}
           isAdmin={isAdmin}

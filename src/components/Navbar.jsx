@@ -9,8 +9,9 @@ export function Navbar({ isAdmin, adminUser, onOpenLogin, onLogout, onOpenDbSett
     { label: 'Education', href: '#education' },
     { label: 'Skills', href: '#skills' },
     { label: 'Projects', href: '#projects' },
-    { label: 'Achievements & Certifications', href: '#achievements' },
+    { label: 'Achievements', href: '#achievements' },
     { label: 'Positions', href: '#positions' },
+    { label: 'Interests', href: '#interests' },
     { label: 'Contact', href: '#contact' },
   ];
 

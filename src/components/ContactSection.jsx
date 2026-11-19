@@ -9,7 +9,7 @@ export function ContactSection({ contact = {}, isAdmin, onEdit }) {
       <div className="flex items-center justify-between mb-8">
         <div>
           <span className="text-xs font-semibold tracking-wider uppercase text-zinc-500 block mb-1">
-            7. Get In Touch
+            8. Get In Touch
           </span>
           <h2 className="text-2xl font-bold text-zinc-900 tracking-tight">
             Contact Details
