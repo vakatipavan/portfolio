@@ -28,16 +28,6 @@ export function ProjectsSection({ projects = [], isAdmin, onAdd, onEdit, onDelet
       {projects.length === 0 ? (
         <div className="py-10 text-center border border-dashed border-zinc-200 rounded text-zinc-500 text-sm">
           No projects listed yet.
-          {isAdmin ? (
-            <div className="mt-2">
-              <button
-                onClick={onAdd}
-                className="text-xs text-zinc-800 font-medium underline"
-              >
-                Click here to add your first project
-              </button>
-            </div>
-          ) : null}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

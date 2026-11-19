@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Lock, LogOut, Menu, X, Database } from 'lucide-react';
+import { LogOut, Menu, X, Database } from 'lucide-react';
 
-export function Navbar({ isAdmin, adminUser, onOpenLogin, onLogout, onOpenDbSettings }) {
+export function Navbar({ isAdmin, onLogout, onOpenDbSettings }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [

@@ -32,7 +32,7 @@ export const initialData = {
       institution: "Ratnam High School, Nellore",
       degree: "Class X (Secondary School)",
       period: "2023",
-      score: "",
+      score: "94.17%",
       details: ""
     }
   ],

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Pencil, Mail, Phone, MapPin, Linkedin, Github, Twitter, ExternalLink } from 'lucide-react';
+import { Pencil, Mail, Phone, MapPin, Linkedin, Github, ExternalLink } from 'lucide-react';
 
 export function ContactSection({ contact = {}, isAdmin, onEdit }) {
-  const { email, phone, location, linkedin, github, twitter } = contact;
+  const { email, phone, location, linkedin, github } = contact;
 
   return (
     <section id="contact" className="py-14">
@@ -65,11 +65,6 @@ export function ContactSection({ contact = {}, isAdmin, onEdit }) {
                 </a>
               </div>
             </div>
-          ) : isAdmin ? (
-            <div className="flex items-start space-x-3 text-zinc-400 italic text-xs">
-              <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" />
-              <span>Phone number not set (Click Edit Contact to add)</span>
-            </div>
           ) : null}
 
           {/* Location */}
@@ -109,19 +104,6 @@ export function ContactSection({ contact = {}, isAdmin, onEdit }) {
               >
                 <Github className="w-4 h-4 text-zinc-500" />
                 <span>GitHub</span>
-                <ExternalLink className="w-3 h-3 text-zinc-400" />
-              </a>
-            )}
-
-            {twitter && (
-              <a
-                href={twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-1.5 text-zinc-700 hover:text-black transition-colors"
-              >
-                <Twitter className="w-4 h-4 text-zinc-500" />
-                <span>Twitter / X</span>
                 <ExternalLink className="w-3 h-3 text-zinc-400" />
               </a>
             )}

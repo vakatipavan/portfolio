@@ -28,16 +28,6 @@ export function PositionsSection({ positions = [], isAdmin, onAdd, onEdit, onDel
       {positions.length === 0 ? (
         <div className="py-8 text-center border border-dashed border-zinc-200 rounded text-zinc-500 text-sm">
           No positions or responsibilities listed yet.
-          {isAdmin && (
-            <div className="mt-2">
-              <button
-                onClick={onAdd}
-                className="text-xs text-zinc-800 font-medium underline"
-              >
-                Add a position or leadership responsibility
-              </button>
-            </div>
-          )}
         </div>
       ) : (
         <div className="space-y-4">

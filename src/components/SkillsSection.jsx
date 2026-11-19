@@ -28,16 +28,6 @@ export function SkillsSection({ skills = [], isAdmin, onAdd, onEdit, onDelete })
       {skills.length === 0 ? (
         <div className="py-8 text-center border border-dashed border-zinc-200 rounded text-zinc-500 text-sm">
           No skills listed yet.
-          {isAdmin && (
-            <div className="mt-2">
-              <button
-                onClick={onAdd}
-                className="text-xs text-zinc-800 font-medium underline"
-              >
-                Add your technical skills
-              </button>
-            </div>
-          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

@@ -49,13 +49,6 @@ export function AchievementsSection({
           {competitions.length === 0 ? (
             <div className="py-6 text-center border border-dashed border-zinc-200 rounded text-zinc-400 text-xs">
               No competitions or events listed yet.
-              {isAdmin && (
-                <div className="mt-1">
-                  <button onClick={onAddCompetition} className="text-zinc-700 font-medium underline">
-                    Add event / competition
-                  </button>
-                </div>
-              )}
             </div>
           ) : (
             <div className="space-y-4">
@@ -146,13 +139,6 @@ export function AchievementsSection({
           {achievements.length === 0 ? (
             <div className="py-6 text-center border border-dashed border-zinc-200 rounded text-zinc-400 text-xs">
               No achievements listed yet.
-              {isAdmin && (
-                <div className="mt-1">
-                  <button onClick={onAddAchievement} className="text-zinc-700 font-medium underline">
-                    Add achievement
-                  </button>
-                </div>
-              )}
             </div>
           ) : (
             <div className="space-y-4">
@@ -225,13 +211,6 @@ export function AchievementsSection({
           {certifications.length === 0 ? (
             <div className="py-6 text-center border border-dashed border-zinc-200 rounded text-zinc-400 text-xs">
               No certifications listed yet.
-              {isAdmin && (
-                <div className="mt-1">
-                  <button onClick={onAddCertificate} className="text-zinc-700 font-medium underline">
-                    Add certificate
-                  </button>
-                </div>
-              )}
             </div>
           ) : (
             <div className="space-y-4">

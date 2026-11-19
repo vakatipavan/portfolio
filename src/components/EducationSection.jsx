@@ -66,15 +66,11 @@ export function EducationSection({ education = [], isAdmin, onAdd, onEdit, onDel
               <div className="mt-2 text-sm text-zinc-700">
                 {item.institution ? (
                   <p className="font-medium text-zinc-800">{item.institution}</p>
-                ) : (
-                  <p className="italic text-zinc-400">
-                    {isAdmin ? "Institution: [Click Edit to enter institution name]" : ""}
-                  </p>
-                )}
+                ) : null}
 
                 {item.score && (
                   <p className="text-xs font-medium text-zinc-600 mt-1">
-                    Grade / Score: <span className="text-zinc-800">{item.score}</span>
+                    Grade / Score: <span className="text-zinc-800 font-semibold">{item.score}</span>
                   </p>
                 )}
 
